@@ -74,7 +74,7 @@ public class Login extends AppCompatActivity {
                             }
 
                             // Move to next screen
-                            Intent intent = new Intent(Login.this, StoreCreate.class);
+                            Intent intent = new Intent(Login.this, Homepage.class);
                             startActivity(intent);
                             finish();
                         } else {

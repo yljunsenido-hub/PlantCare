@@ -48,7 +48,7 @@ public class TestOutput extends AppCompatActivity {
 
             // ✅ Reference to this user's Arduino data
             userRef = FirebaseDatabase.getInstance()
-                    .getReference("users")
+                    .getReference("Users")
                     .child(uid)
                     .child("arduinoData");
 
@@ -58,8 +58,8 @@ public class TestOutput extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         Integer soil = snapshot.child("soil").getValue(Integer.class);
-                        Float temp = snapshot.child("temperature").getValue(Float.class);
-                        Float hum = snapshot.child("humidity").getValue(Float.class);
+                        Integer temp = snapshot.child("temperature").getValue(Integer.class);
+                        Integer hum = snapshot.child("humidity").getValue(Integer.class);
 
                         if (soil != null) soilText.setText("Soil: " + soil);
                         if (temp != null) tempText.setText("Temp: " + temp + " °C");
