@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@drawable/plantcareback3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Homepage">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView1"
+        android:id="@+id/profileBtn"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="68dp"
@@ -17,14 +18,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="45dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/profileicon"></ImageView>
+            android:background="@drawable/profileicon">
+        </ImageView>
 
         <TextView
             android:layout_width="match_parent"
@@ -33,12 +39,14 @@
             android:fontFamily="sans-serif-black"
             android:gravity="center"
             android:text="PROFILE"
-            android:textSize="19dp"></TextView>
+            android:textSize="19dp"
+            android:textColor="#424141">
+        </TextView>
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+        android:id="@+id/chatbotBtn"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="68dp"
@@ -47,14 +55,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.879"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="45dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/aiicon"></ImageView>
+            android:background="@drawable/aiicon">
+        </ImageView>
 
         <TextView
             android:layout_width="match_parent"
@@ -63,28 +75,34 @@
             android:fontFamily="sans-serif-black"
             android:gravity="center"
             android:text="AI CHATBOT"
-            android:textSize="18dp"></TextView>
+            android:textSize="18dp"
+            android:textColor="#424141">
+        </TextView>
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
+        android:id="@+id/soilBtn"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="16dp"
         app:cardBackgroundColor="#EDEDED"
         app:cardCornerRadius="15dp"
+        android:background="@drawable/soilback"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView1">
+        app:layout_constraintTop_toBottomOf="@+id/profileBtn"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="45dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/soilIcon">
+            android:background="@drawable/soilicon">
         </ImageView>
 
         <TextView
@@ -94,23 +112,26 @@
             android:text="SOIL"
             android:fontFamily="sans-serif-black"
             android:textSize="20dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:textColor="#424141">
         </TextView>
 
         <TextView
+            android:id="@+id/soilTxtView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="125dp"
-            android:text="30%"
+            android:text=""
             android:fontFamily="sans-serif-black"
             android:textSize="18dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:textColor="#424141">
         </TextView>
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView4"
+        android:id="@+id/tempBtn"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="16dp"
@@ -119,7 +140,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.879"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2">
+        app:layout_constraintTop_toBottomOf="@+id/chatbotBtn"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
 
         <ImageView
             android:layout_width="80dp"
@@ -136,23 +160,26 @@
             android:text="TEMPERATURE"
             android:fontFamily="sans-serif-black"
             android:textSize="16dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:textColor="#424141">
         </TextView>
 
         <TextView
+            android:id="@+id/tempTxtView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="125dp"
-            android:text="30%"
+            android:text=""
             android:fontFamily="sans-serif-black"
             android:textSize="18dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:textColor="#424141">
         </TextView>
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView5"
+        android:id="@+id/humidityBtn"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="20dp"
@@ -161,14 +188,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3">
+        app:layout_constraintTop_toBottomOf="@+id/soilBtn"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="45dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/humidityIcon">
+            android:background="@drawable/humidityicon">
         </ImageView>
 
         <TextView
@@ -178,23 +208,26 @@
             android:text="HUMIDITY"
             android:fontFamily="sans-serif-black"
             android:textSize="18dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:textColor="#424141">
         </TextView>
 
         <TextView
+            android:id="@+id/humidityTxtView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="125dp"
-            android:text="30%"
+            android:text=""
             android:fontFamily="sans-serif-black"
             android:textSize="18dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:textColor="#424141">
         </TextView>
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView6"
+        android:id="@+id/ldrBtn"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="20dp"
@@ -203,14 +236,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.879"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView4">
+        app:layout_constraintTop_toBottomOf="@+id/tempBtn"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="45dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/ldrIcon">
+            android:background="@drawable/ldricon">
         </ImageView>
 
         <TextView
@@ -220,17 +256,20 @@
             android:text="LDR"
             android:fontFamily="sans-serif-black"
             android:textSize="19dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:textColor="#424141">
         </TextView>
 
         <TextView
+            android:id="@+id/ldrTxtView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="125dp"
-            android:text="30%"
+            android:text=""
             android:fontFamily="sans-serif-black"
             android:textSize="18dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:textColor="#424141">
         </TextView>
 
     </androidx.cardview.widget.CardView>
