@@ -15,6 +15,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".HumidityPage"
+            android:exported="false" />
+        <activity
+            android:name=".TemperaturePage"
+            android:exported="false" />
+        <activity
             android:name=".SoilPage"
             android:exported="false" />
         <activity
