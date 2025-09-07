@@ -275,27 +275,73 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/arduinoFunctions"
-        android:layout_width="355dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="632dp"
+        android:id="@+id/func1"
+        android:layout_width="110dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="636dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="#EDEDED"
         app:cardCornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="This is for arduino functions"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="#424141"/>
+        <ImageView
+            android:layout_width="70sp"
+            android:layout_height="60sp"
+            android:background="@drawable/wifi"
+            android:layout_gravity="center"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/func2"
+        android:layout_width="110dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="636dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="#EDEDED"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="70sp"
+            android:layout_height="70sp"
+            android:background="@drawable/interval"
+            android:layout_gravity="center"/>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/func3"
+        android:layout_width="110dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="636dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="#EDEDED"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.906"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="65sp"
+            android:layout_height="65sp"
+            android:background="@drawable/refresh"
+            android:layout_gravity="center"/>
+
     </androidx.cardview.widget.CardView>
 
 
