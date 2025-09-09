@@ -30,9 +30,6 @@
             android:name=".StoreCreate"
             android:exported="false" />
         <activity
-            android:name=".TestOutput"
-            android:exported="false" />
-        <activity
             android:name=".Register"
             android:exported="false" />
         <activity

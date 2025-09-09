@@ -128,11 +128,11 @@ public class HumidityPage extends AppCompatActivity {
                         }
 
                         if (latestHumid != null) {
-                            humidTxtView.setText("Current Humid: " + latestHumid);
+                            humidTxtView.setText(latestHumid);
                         }
                         } else {
                             // If no data exists after deletion, clear everything
-                            humidTxtView.setText("Current Humid: ---");
+                            humidTxtView.setText("No Data");
                             historyLayout.removeAllViews();
                         }
                     }

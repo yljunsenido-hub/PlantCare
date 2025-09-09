@@ -42,7 +42,7 @@ public class Homepage extends AppCompatActivity {
         // Set click listeners for the buttons
         //Profile
         profileBtn.setOnClickListener(v -> {
-            Intent profIntent = new Intent(Homepage.this, Homepage.class);
+            Intent profIntent = new Intent(Homepage.this, ProfilePage.class);
             startActivity(profIntent);
         });
 
@@ -60,13 +60,13 @@ public class Homepage extends AppCompatActivity {
 
         //Temperature
         tempBtn.setOnClickListener(v -> {
-            Intent tempIntent = new Intent(Homepage.this, Homepage.class);
+            Intent tempIntent = new Intent(Homepage.this, TemperaturePage.class);
             startActivity(tempIntent);
         });
 
         //Humidity
         humidityBtn.setOnClickListener(v -> {
-            Intent humidityIntent = new Intent(Homepage.this, Homepage.class);
+            Intent humidityIntent = new Intent(Homepage.this, HumidityPage.class);
             startActivity(humidityIntent);
         });
 

@@ -51,6 +51,7 @@ public class TemperaturePage extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         tempTxtView = findViewById(R.id.tempTxtView);
         historyLayout = findViewById(R.id.historyLayout);
+        deleteBtn = findViewById(R.id.deleteBtn);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -128,11 +129,11 @@ public class TemperaturePage extends AppCompatActivity {
                         }
 
                         if (latestTemp != null) {
-                            tempTxtView.setText("Current Temp: " + latestTemp);
+                            tempTxtView.setText(latestTemp);
                         }
                     } else {
                         // If no data exists after deletion, clear everything
-                        tempTxtView.setText("Current Temp: ---");
+                        tempTxtView.setText("No Data");
                         historyLayout.removeAllViews();
                     }
                 }

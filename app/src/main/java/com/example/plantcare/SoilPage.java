@@ -129,11 +129,11 @@ public class SoilPage extends AppCompatActivity {
                         }
 
                         if (latestSoil != null) {
-                            soilTxtView.setText("Current Soil: " + latestSoil);
+                            soilTxtView.setText(latestSoil);
                         }
                     } else {
                         // If no data exists after deletion, clear everything
-                        soilTxtView.setText("Current Soil: ---");
+                        soilTxtView.setText("No Data");
                         historyLayout.removeAllViews();
                     }
                 }
