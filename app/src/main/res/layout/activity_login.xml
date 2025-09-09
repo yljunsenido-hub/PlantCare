@@ -34,7 +34,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="370dp"
         android:layout_height="400dp"
-        android:layout_marginTop="304dp"
+        android:layout_marginTop="300dp"
         app:cardCornerRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
@@ -67,8 +67,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:clickable="false"
                     android:background="@drawable/tab_selected"
+                    android:clickable="false"
                     android:fontFamily="sans-serif-black"
                     android:text="Login"
                     android:textColor="@color/black" />
@@ -79,8 +79,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/tab_unselected"
-                    android:fontFamily="sans-serif-black"
                     android:clickable="true"
+                    android:fontFamily="sans-serif-black"
                     android:text="Register"
                     android:textColor="#686767" />
             </LinearLayout>
@@ -90,14 +90,14 @@
                 android:id="@+id/editEmail"
                 android:layout_width="320sp"
                 android:layout_height="45dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/input_background"
                 android:drawableLeft="@android:drawable/ic_dialog_email"
                 android:hint="Email Address"
                 android:inputType="textEmailAddress"
-                android:textSize="17dp"
-                android:layout_marginTop="10dp"
-                android:padding="10dp" />
+                android:padding="10dp"
+                android:textSize="17dp" />
 
             <!-- Password -->
             <EditText
@@ -108,9 +108,9 @@
                 android:background="@drawable/input_background"
                 android:drawableLeft="@android:drawable/ic_lock_lock"
                 android:hint="Password"
-                android:textSize="17dp"
                 android:inputType="textPassword"
-                android:padding="10dp" />
+                android:padding="10dp"
+                android:textSize="17dp" />
 
             <!-- Remember me + Forgot password -->
 

@@ -28,11 +28,12 @@ import okhttp3.Response;
 public class Login extends AppCompatActivity {
 
     EditText editEmail, editPassword;
-    Button btnLogin;
+    Button btnLogin,registerTab;
     FirebaseAuth mAuth;
 
     // Change this to your ESP’s IP (static IP recommended)
     private static final String ESP_IP = "192.168.1.59";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,14 @@ public class Login extends AppCompatActivity {
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        registerTab = findViewById(R.id.registerTab);
         mAuth = FirebaseAuth.getInstance();
+
+        registerTab.setOnClickListener(v -> {
+            Intent intent = new Intent(Login.this, Register.class);
+            startActivity(intent);
+            finish();
+        });
 
         btnLogin.setOnClickListener(v -> {
             String email = editEmail.getText().toString().trim();
@@ -82,7 +90,11 @@ public class Login extends AppCompatActivity {
                         }
                     });
         });
+
+
     }
+
+
 
     private void sendUIDToArduino(String uid) {
         OkHttpClient client = new OkHttpClient();
@@ -119,4 +131,6 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
+
 }

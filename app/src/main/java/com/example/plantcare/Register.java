@@ -22,8 +22,8 @@ import java.util.HashMap;
 
 public class Register extends AppCompatActivity {
 
-    EditText editName, editEmail, editPassword;
-    Button btnRegister, btnBack;
+    EditText editEmail, editPassword, editContact, editFirstName, editLastName, editUserName;
+    Button btnRegister, loginTab;
     FirebaseAuth mAuth;
 
     @Override
@@ -37,20 +37,38 @@ public class Register extends AppCompatActivity {
             return insets;
         });
 
-        editName = findViewById(R.id.editName);
+        editFirstName = findViewById(R.id.editFirstName);
+        editLastName = findViewById(R.id.editLastName);
+        editUserName = findViewById(R.id.editUserName);
+        editContact = findViewById(R.id.editContact);
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
         btnRegister = findViewById(R.id.btnRegister);
-        btnBack = findViewById(R.id.btnBack);
+        loginTab = findViewById(R.id.loginTab);
         mAuth = FirebaseAuth.getInstance();
 
         btnRegister.setOnClickListener(v -> {
-            String name = editName.getText().toString().trim();
+            String fname = editFirstName.getText().toString().trim();
+            String lname = editLastName.getText().toString().trim();
+            String username = editUserName.getText().toString().trim();
+            String contact = editContact.getText().toString().trim();
             String email = editEmail.getText().toString().trim();
             String password = editPassword.getText().toString().trim();
 
-            if (TextUtils.isEmpty(name)) {
-                editName.setError("Name is required");
+            if (TextUtils.isEmpty(fname)) {
+                editFirstName.setError("First Name is required");
+                return;
+            }
+            if (TextUtils.isEmpty(lname)) {
+                editLastName.setError("Last Name is required");
+                return;
+            }
+            if (TextUtils.isEmpty(username)) {
+                editUserName.setError("Username is required");
+                return;
+            }
+            if (TextUtils.isEmpty(contact)) {
+                editContact.setError("Contact is required");
                 return;
             }
             if (TextUtils.isEmpty(email)) {
@@ -68,7 +86,10 @@ public class Register extends AppCompatActivity {
                             String uid = mAuth.getCurrentUser().getUid();
 
                             HashMap<String, Object> userMap = new HashMap<>();
-                            userMap.put("name", name);
+                            userMap.put("first_name", fname);
+                            userMap.put("last_name", lname);
+                            userMap.put("username", username);
+                            userMap.put("contact", contact);
                             userMap.put("email", email);
 
                             FirebaseDatabase.getInstance().getReference("Users")
@@ -89,7 +110,7 @@ public class Register extends AppCompatActivity {
                     });
         });
 
-        btnBack.setOnClickListener(v -> {
+        loginTab.setOnClickListener(v -> {
             Intent intent = new Intent(Register.this, Login.class);
             startActivity(intent);
             finish(); // Optional: closes the current activity
