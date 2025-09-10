@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     // Change this to your ESP’s IP (static IP recommended)
-    private static final String ESP_IP = "192.168.1.59";
+    private static final String ESP_IP = "192.168.1.38";
 
 
     @Override
@@ -78,7 +78,7 @@ public class Login extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
                                 String uid = user.getUid();
-                                sendUIDToArduino(uid);
+                                sendUIDToArduino(uid, email, password);
                             }
 
                             // Move to next screen
@@ -93,44 +93,44 @@ public class Login extends AppCompatActivity {
 
 
     }
-
-
-
-    private void sendUIDToArduino(String uid) {
+    private void sendUIDToArduino(String uid, String email, String password) {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://" + ESP_IP + "/uid?uid=" + uid;
 
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
+        // Send UID first
+        String uidUrl = "http://" + ESP_IP + "/uid?uid=" + uid;
+        Request uidRequest = new Request.Builder().url(uidUrl).get().build();
 
-        client.newCall(request).enqueue(new Callback() {
+        client.newCall(uidRequest).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("Arduino", "Error: " + e.getMessage());
-                runOnUiThread(() ->
-                        Toast.makeText(Login.this, "Failed to send UID to ESP", Toast.LENGTH_SHORT).show()
-                );
+                Log.e("Arduino", "UID Error: " + e.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    String resp = response.body().string();
-                    Log.d("Arduino", "Response: " + resp);
-                    runOnUiThread(() ->
-                            Toast.makeText(Login.this, "UID sent to ESP!", Toast.LENGTH_SHORT).show()
-                    );
-                } else {
-                    Log.e("Arduino", "Failed with code: " + response.code());
-                    runOnUiThread(() ->
-                            Toast.makeText(Login.this, "ESP error: " + response.code(), Toast.LENGTH_SHORT).show()
-                    );
+                    Log.d("Arduino", "UID Response: " + response.body().string());
+                }
+            }
+        });
+
+        // Send Auth (email + password)
+        String authUrl = "http://" + ESP_IP + "/auth?email=" + email + "&password=" + password;
+        Request authRequest = new Request.Builder().url(authUrl).get().build();
+
+        client.newCall(authRequest).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("Arduino", "Auth Error: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Log.d("Arduino", "Auth Response: " + response.body().string());
                 }
             }
         });
     }
-
 
 }

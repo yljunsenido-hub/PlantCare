@@ -61,11 +61,10 @@ public class TemperaturePage extends AppCompatActivity {
             userRef = FirebaseDatabase.getInstance()
                     .getReference("Users")
                     .child(uid)
-                    .child("arduinoData")
-                    .child("dummy");
+                    .child("arduinoData");
 
             // Deleting all of the data history
-            deleteBtn.setOnClickListener(View -> {
+            deleteBtn.setOnClickListener(v -> {
                 new AlertDialog.Builder(TemperaturePage.this)
                         .setTitle("Confirm Delete")
                         .setMessage("Are you sure you want to delete ALL history?")
@@ -129,7 +128,7 @@ public class TemperaturePage extends AppCompatActivity {
                         }
 
                         if (latestTemp != null) {
-                            tempTxtView.setText(latestTemp);
+                            tempTxtView.setText(String.valueOf(latestTemp));
                         }
                     } else {
                         // If no data exists after deletion, clear everything

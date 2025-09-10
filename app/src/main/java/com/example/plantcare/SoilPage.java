@@ -61,11 +61,10 @@ public class SoilPage extends AppCompatActivity {
             userRef = FirebaseDatabase.getInstance()
                     .getReference("Users")
                     .child(uid)
-                    .child("arduinoData")
-                    .child("dummy"); // go directly into dummy
+                    .child("arduinoData");
 
             // Deleting all of the data history
-            deleteBtn.setOnClickListener(View -> {
+            deleteBtn.setOnClickListener(v -> {
                 new AlertDialog.Builder(SoilPage.this)
                         .setTitle("Confirm Delete")
                         .setMessage("Are you sure you want to delete ALL history?")
@@ -100,7 +99,7 @@ public class SoilPage extends AppCompatActivity {
                                 SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm:ss", Locale.getDefault());
                                 String formattedDate = sdf.format(date);
 
-                                latestSoil = soil;
+                                latestSoil = soil; // this keeps updating to last item
                                 latestTimestamp = timestamp;
 
                                 LinearLayout row = new LinearLayout(SoilPage.this);
@@ -129,10 +128,10 @@ public class SoilPage extends AppCompatActivity {
                         }
 
                         if (latestSoil != null) {
-                            soilTxtView.setText(latestSoil);
+                            // ✅ Fix: convert int to String
+                            soilTxtView.setText(String.valueOf(latestSoil));
                         }
                     } else {
-                        // If no data exists after deletion, clear everything
                         soilTxtView.setText("No Data");
                         historyLayout.removeAllViews();
                     }
@@ -143,7 +142,6 @@ public class SoilPage extends AppCompatActivity {
                     Log.e("Firebase", "Error: " + error.getMessage());
                 }
             });
-
         }
             btnBack.setOnClickListener(View -> {
             Intent intent = new Intent(SoilPage.this, Homepage.class);

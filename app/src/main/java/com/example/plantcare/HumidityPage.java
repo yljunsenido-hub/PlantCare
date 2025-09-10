@@ -61,10 +61,9 @@ public class HumidityPage extends AppCompatActivity {
             userRef = FirebaseDatabase.getInstance()
                     .getReference("Users")
                     .child(uid)
-                    .child("arduinoData")
-                    .child("dummy");
+                    .child("arduinoData");
 
-            deleteBtn.setOnClickListener(View ->{
+            deleteBtn.setOnClickListener(v ->{
                 new AlertDialog.Builder(HumidityPage.this)
                         .setTitle("Confirm Delete")
                         .setMessage("Are you sure you want to delete ALL history?")
@@ -128,7 +127,7 @@ public class HumidityPage extends AppCompatActivity {
                         }
 
                         if (latestHumid != null) {
-                            humidTxtView.setText(latestHumid);
+                            humidTxtView.setText(String.valueOf(latestHumid));
                         }
                         } else {
                             // If no data exists after deletion, clear everything
