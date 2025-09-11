@@ -7,6 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -24,6 +29,8 @@ public class Ai_Chatbot extends AppCompatActivity{
     private EditText inputMessage;
     private ChatAdapter adapter;
     private List<ChatMessage> chatList = new ArrayList<>();
+    private FirebaseAuth mAuth;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +53,10 @@ public class Ai_Chatbot extends AppCompatActivity{
         geminiApi = retrofit.create(GeminiApi.class);
 
         sendButton.setOnClickListener(v -> {
-            String message = inputMessage.getText().toString().trim();
-            if (!message.isEmpty()) {
-                addMessage(new ChatMessage(message, true));
-                sendMessageToGemini(message);
+            String userMsg = inputMessage.getText().toString().trim();
+            if (!userMsg.isEmpty()) {
+                addMessage(new ChatMessage(userMsg, true));
+                fetchFirebaseDataAndSend(userMsg);   // new function
                 inputMessage.setText("");
             }
         });
@@ -91,5 +98,61 @@ public class Ai_Chatbot extends AppCompatActivity{
                 addMessage(new ChatMessage("Failed: " + t.getMessage(), false));
             }
         });
+    }
+
+    private float calculateAverage(List<Float> data) {
+        if (data == null || data.isEmpty()) return 0;
+        float sum = 0;
+        for (float value : data) sum += value;
+        return sum / data.size();
+    }
+
+
+    private void fetchFirebaseDataAndSend(String userMsg) {
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            String uid = user.getUid();
+            userRef = FirebaseDatabase.getInstance()
+                    .getReference("Users")
+                    .child(uid)
+                    .child("arduinoData");
+
+            userRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult().exists()) {
+                    DataSnapshot snapshot = task.getResult();
+
+                    List<Float> soilData = new ArrayList<>();
+                    List<Float> humidityData = new ArrayList<>();
+                    List<Float> temperatureData = new ArrayList<>();
+
+                    // Loop through each record under arduinoData
+                    for (DataSnapshot recordSnap : snapshot.getChildren()) {
+                        Float soil = recordSnap.child("soil").getValue(Float.class);
+                        Float humidity = recordSnap.child("humidity").getValue(Float.class);
+                        Float temperature = recordSnap.child("temperature").getValue(Float.class);
+
+                        if (soil != null) soilData.add(soil);
+                        if (humidity != null) humidityData.add(humidity);
+                        if (temperature != null) temperatureData.add(temperature);
+                    }
+
+                    float soilAvg = calculateAverage(soilData);
+                    float humidityAvg = calculateAverage(humidityData);
+                    float temperatureAvg = calculateAverage(temperatureData);
+
+                    String enrichedMessage = "Current sensor averages:\n" +
+                            "Soil: " + soilAvg + "\n" +
+                            "Humidity: " + humidityAvg + "%\n" +
+                            "Temperature: " + temperatureAvg + "°C\n\n" +
+                            "User Question: " + userMsg;
+
+                    sendMessageToGemini(enrichedMessage);
+                } else {
+                    sendMessageToGemini(userMsg); // fallback if no data
+                }
+            });
+        }
     }
 }
