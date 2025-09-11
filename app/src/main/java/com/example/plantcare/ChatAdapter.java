@@ -2,6 +2,7 @@ package com.example.plantcare;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,17 +51,22 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
         TextView userText;
+        ImageView userImage;
+
         UserViewHolder(View itemView) {
             super(itemView);
             userText = itemView.findViewById(R.id.userText);
+            userImage = itemView.findViewById(R.id.userImage);
         }
     }
 
     static class BotViewHolder extends RecyclerView.ViewHolder {
         TextView botText;
+        ImageView botImage;
         BotViewHolder(View itemView) {
             super(itemView);
             botText = itemView.findViewById(R.id.botText);
+            botImage = itemView.findViewById(R.id.botImage);
         }
     }
 }
