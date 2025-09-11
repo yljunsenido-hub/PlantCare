@@ -18,6 +18,9 @@
             android:name=".WifiManager"
             android:exported="false" />
         <activity
+            android:name=".Ai_Chatbot"
+            android:exported="false" />
+        <activity
             android:name=".ProfilePage"
             android:exported="false" />
         <activity

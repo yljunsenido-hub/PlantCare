@@ -48,7 +48,7 @@ public class Homepage extends AppCompatActivity {
 
         //Chatbot
         chatbotBtn.setOnClickListener(v -> {
-            Intent chatIntent = new Intent(Homepage.this, Homepage.class);
+            Intent chatIntent = new Intent(Homepage.this, Ai_Chatbot.class);
             startActivity(chatIntent);
         });
 
