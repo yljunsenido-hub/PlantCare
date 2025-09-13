@@ -98,7 +98,14 @@ public class Register extends AppCompatActivity {
                                     .addOnCompleteListener(dbTask -> {
                                         if (dbTask.isSuccessful()) {
                                             Toast.makeText(Register.this, "Account created successfully", Toast.LENGTH_SHORT).show();
-                                            Log.d("Register", "User data saved successfully");
+                                            Log.d("Register", "Account Registration Complete");
+                                            // 🔹 Clear the input fields here
+                                            editFirstName.setText("");
+                                            editLastName.setText("");
+                                            editUserName.setText("");
+                                            editContact.setText("");
+                                            editEmail.setText("");
+                                            editPassword.setText("");
                                         } else {
                                             Toast.makeText(Register.this, "Failed to save user data", Toast.LENGTH_SHORT).show();
                                             Log.e("Register", "Error saving user data", dbTask.getException());
