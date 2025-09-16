@@ -3,18 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@drawable/plantcareback3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".WifiManager">
 
     <Button
         android:id="@+id/resetBtn"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="93dp"
+        android:layout_height="88dp"
         android:layout_marginTop="640dp"
-        android:text="Press Me"
+        android:background="@drawable/reset"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/backbutton"
+        android:contentDescription="Back"
+        android:scaleType="centerInside"
+        android:src="@drawable/back_arrow_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.907"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:foreground="?attr/selectableItemBackground"
+        android:focusable="true"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="349dp"
+        android:layout_height="451dp"
+        android:layout_marginTop="156dp"
+        app:cardCornerRadius="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/wifiInfoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-medium"
+            android:text="Loading WiFi info..."
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+    </androidx.cardview.widget.CardView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

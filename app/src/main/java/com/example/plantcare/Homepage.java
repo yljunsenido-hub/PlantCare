@@ -87,9 +87,9 @@ public class Homepage extends AppCompatActivity {
             startActivity(func1Intent);
         });
 
-        ldrBtn.setOnClickListener(v -> {
-            Intent ldrIntent = new Intent(Homepage.this, Homepage.class);
-            startActivity(ldrIntent);
+        func2.setOnClickListener(v -> {
+            Intent func2Intent = new Intent(Homepage.this, ArduinoInterval.class);
+            startActivity(func2Intent);
         });
 
         ldrBtn.setOnClickListener(v -> {
