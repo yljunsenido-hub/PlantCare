@@ -2,131 +2,172 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@drawable/plantcareback3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/plantcareback3"
     tools:context=".ArduinoInterval">
 
+    <ImageButton android:id="@+id/btnBack" android:layout_width="65dp" android:layout_height="65dp" android:layout_marginTop="20dp" android:background="@drawable/backbutton" android:contentDescription="Back" android:focusable="true" android:foreground="?attr/selectableItemBackground" android:scaleType="centerInside" android:src="@drawable/back_arrow_white" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.907" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Card 1: Display current interval -->
     <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        android:id="@+id/cardCurrent"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
         app:cardCornerRadius="10dp"
+        app:cardElevation="6dp"
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.226">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current Interval"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:fontFamily="sans-serif-black" />
+
+            <TextView
+                android:id="@+id/seconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="60sp"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif-black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seconds"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Card 2: Buttons row -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="6dp"
+        app:layout_constraintTop_toBottomOf="@id/cardCurrent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:background="#EDEDED">
 
-            <!-- Texts -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/custom"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:fontFamily="sans-serif-black"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:text="Customize" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Current Interval"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="sans-serif-medium"/>
-
-                <TextView
-                    android:id="@+id/seconds"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="0"
-                    android:layout_marginTop="10dp"
-                    android:textSize="35sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="sans-serif-black"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Seconds"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="sans-serif-medium"/>
-            </LinearLayout>
-
-            <!-- Buttons row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#A91C1C">
-
-                <Button
-                    android:id="@+id/btnAdd"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="Add"/>
-
-                <Button
-                    android:id="@+id/btnReset"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Reset"/>
-            </LinearLayout>
-
-            <!-- Hidden edit section -->
-            <LinearLayout
-                android:id="@+id/editSection"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <EditText
-                        android:id="@+id/inputValue"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="Enter value"
-                        android:inputType="number"
-                        android:gravity="center"/>
-
-                    <Button
-                        android:id="@+id/btnPlus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+5"/>
-
-                    <Button
-                        android:id="@+id/btnMinus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-5"/>
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnApply"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Apply"
-                    android:layout_marginTop="10dp"/>
-            </LinearLayout>
-
+            <Button
+                android:id="@+id/btnReset"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/customreset"
+                android:textSize="17dp"
+                android:fontFamily="sans-serif-black"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:text="Reset" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <!-- Card 3: Hidden edit section -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="6dp"
+        app:layout_constraintTop_toBottomOf="@id/cardButtons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="30dp">
+
+        <LinearLayout
+            android:id="@+id/editSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/inputValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="Enter value"
+                    android:inputType="number" />
+
+                <Button
+                    android:id="@+id/btnPlus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+5" />
+
+                <Button
+                    android:id="@+id/btnMinus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-5" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnApply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-black"
+                android:textSize="17dp"
+                android:background="@drawable/custom"
+                android:text="Apply" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

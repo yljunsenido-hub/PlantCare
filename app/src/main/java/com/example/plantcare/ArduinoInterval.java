@@ -1,9 +1,11 @@
 package com.example.plantcare;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ public class ArduinoInterval extends AppCompatActivity {
     private TextView secondsText;
     private LinearLayout editSection;
     private EditText inputValue;
+    ImageButton btnBack;
     private Button btnAdd, btnReset, btnPlus, btnMinus, btnApply;
 
     private static final String ESP_IP = "esp8266.local";
@@ -37,6 +40,7 @@ public class ArduinoInterval extends AppCompatActivity {
         secondsText = findViewById(R.id.seconds);
         editSection = findViewById(R.id.editSection);
         inputValue = findViewById(R.id.inputValue);
+        btnBack = findViewById(R.id.btnBack);
 
         btnAdd = findViewById(R.id.btnAdd);
         btnReset = findViewById(R.id.btnReset);
@@ -47,7 +51,7 @@ public class ArduinoInterval extends AppCompatActivity {
         btnAdd.setOnClickListener(v -> editSection.setVisibility(View.VISIBLE));
 
         btnReset.setOnClickListener(v -> {
-            secondsText.setText(""); // reset to default
+            secondsText.setText("0"); // reset to default
             inputValue.setText("");
             editSection.setVisibility(View.GONE);
         });
@@ -72,6 +76,11 @@ public class ArduinoInterval extends AppCompatActivity {
 
             // Send value to Arduino via HTTP
             sendIntervalToArduino(value);
+        });
+
+        btnBack.setOnClickListener(View -> {
+            Intent intent = new Intent(ArduinoInterval.this, Homepage.class);
+            startActivity(intent);
         });
     }
 
