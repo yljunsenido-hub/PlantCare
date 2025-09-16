@@ -11,10 +11,10 @@
         android:id="@+id/resetBtn"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_marginTop="600dp"
+        android:layout_marginTop="640dp"
         android:text="Press Me"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

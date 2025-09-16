@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     // Change this to your ESP’s IP (static IP recommended)
-    private static final String ESP_IP = "192.168.1.38";
+    private static final String ESP_IP = "esp8266.local";
 
 
     @Override

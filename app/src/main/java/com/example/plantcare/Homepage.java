@@ -16,6 +16,8 @@ public class Homepage extends AppCompatActivity {
     CardView profileBtn, chatbotBtn, soilBtn, tempBtn, humidityBtn, ldrBtn;
     TextView soilTxtView, tempTxtView, humidityTxtView, ldrTxtView;
 
+    CardView func1, func2, func3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,10 @@ public class Homepage extends AppCompatActivity {
         tempTxtView = findViewById(R.id.tempTxtView);
         humidityTxtView = findViewById(R.id.humidityTxtView);
         ldrTxtView = findViewById(R.id.ldrTxtView);
+
+        func1 = findViewById(R.id.func1);
+        func2 = findViewById(R.id.func2);
+        func3 = findViewById(R.id.func3);
 
         // Set click listeners for the buttons
         //Profile
@@ -71,6 +77,21 @@ public class Homepage extends AppCompatActivity {
         });
 
         //LDR
+        ldrBtn.setOnClickListener(v -> {
+            Intent ldrIntent = new Intent(Homepage.this, Homepage.class);
+            startActivity(ldrIntent);
+        });
+
+        func1.setOnClickListener(v -> {
+            Intent func1Intent = new Intent(Homepage.this, WifiManager.class);
+            startActivity(func1Intent);
+        });
+
+        ldrBtn.setOnClickListener(v -> {
+            Intent ldrIntent = new Intent(Homepage.this, Homepage.class);
+            startActivity(ldrIntent);
+        });
+
         ldrBtn.setOnClickListener(v -> {
             Intent ldrIntent = new Intent(Homepage.this, Homepage.class);
             startActivity(ldrIntent);

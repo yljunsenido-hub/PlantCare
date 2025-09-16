@@ -22,9 +22,7 @@ import com.android.volley.toolbox.Volley;
 public class WifiManager extends AppCompatActivity {
 
     Button resetBtn;
-    // Define the ESP IP Address as a constant
-    // It's good practice to make this easily changeable if needed
-    // private static final String ESP_IP_ADDRESS = "192.168.1.59"; // Replace with your actual ESP IP
+    private static final String ESP_IP_ADDRESS = "esp8266.local";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,42 +36,42 @@ public class WifiManager extends AppCompatActivity {
             return insets;
         });
 
-//        resetBtn = findViewById(R.id.resetBtn);
-//
-//        // Set an OnClickListener for the reset button
-//        resetBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                sendWifiResetRequest();
-//            }
-//        });
-//    }
-//
-//    private void sendWifiResetRequest() {
-//        // The URL to send the GET request to
-//        String url = "http://" + ESP_IP_ADDRESS + "/resetwifi";
-//
-//        // Instantiate the RequestQueue.
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//
-//        // Request a string response from the provided URL.
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        // You can also parse the 'response' string if your ESP sends back data
-//                        Toast.makeText(WifiManager.this, "ESP WiFi Reset Successful", Toast.LENGTH_SHORT).show();
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // You can log the error for more details: error.printStackTrace();
-//                        Toast.makeText(WifiManager.this, "Failed to connect to ESP: " + error.toString(), Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//
-//        // Add the request to the RequestQueue.
-//        queue.add(stringRequest);
+        resetBtn = findViewById(R.id.resetBtn);
+
+        // Set an OnClickListener for the reset button
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendWifiResetRequest();
+            }
+        });
+    }
+
+    private void sendWifiResetRequest() {
+        // The URL to send the GET request to
+        String url = "http://" + ESP_IP_ADDRESS + "/resetwifi";
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // You can also parse the 'response' string if your ESP sends back data
+                        Toast.makeText(WifiManager.this, "ESP WiFi Reset Successful", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // You can log the error for more details: error.printStackTrace();
+                        Toast.makeText(WifiManager.this, "Failed to connect to ESP: " + error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 }
