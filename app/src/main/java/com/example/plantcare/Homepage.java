@@ -2,6 +2,7 @@ package com.example.plantcare;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,10 +14,11 @@ import androidx.cardview.widget.CardView;
 
 public class Homepage extends AppCompatActivity {
 
-    CardView profileBtn, chatbotBtn, soilBtn, tempBtn, humidityBtn, ldrBtn;
+    CardView profileBtn, chatbotBtn, soilBtn, tempBtn, humidityBtn, wifiBtn;
     TextView soilTxtView, tempTxtView, humidityTxtView, ldrTxtView;
-
     CardView func1, func2, func3;
+    ImageView func3Icon;
+    private static final String ESP_IP = "esp8266.local";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,8 @@ public class Homepage extends AppCompatActivity {
         soilBtn = findViewById(R.id.soilBtn);
         tempBtn = findViewById(R.id.tempBtn);
         humidityBtn = findViewById(R.id.humidityBtn);
-        ldrBtn = findViewById(R.id.ldrBtn);
+        wifiBtn = findViewById(R.id.wifiBtn);
+        func3Icon = findViewById(R.id.func3Icon);
 
         soilTxtView = findViewById(R.id.soilTxtView);
         tempTxtView = findViewById(R.id.tempTxtView);
@@ -44,6 +47,31 @@ public class Homepage extends AppCompatActivity {
         func1 = findViewById(R.id.func1);
         func2 = findViewById(R.id.func2);
         func3 = findViewById(R.id.func3);
+
+        func3.setOnClickListener(v -> {
+            // Change icon immediately to indicate "working"
+            runOnUiThread(() -> func3Icon.setImageResource(R.drawable.refreshgreen));
+
+            new Thread(() -> {
+                try {
+                    String url = "http://" + ESP_IP + "/forcePush";
+                    java.net.URL requestUrl = new java.net.URL(url);
+                    java.net.HttpURLConnection conn = (java.net.HttpURLConnection) requestUrl.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.connect();
+                    conn.getInputStream().close();
+
+                    // After request finishes, restore original image
+                    runOnUiThread(() -> func3Icon.setImageResource(R.drawable.refresh));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    // In case of error, also reset to default
+                    runOnUiThread(() -> func3Icon.setImageResource(R.drawable.refresh));
+                }
+            }).start();
+        });
+
 
         // Set click listeners for the buttons
         //Profile
@@ -77,13 +105,13 @@ public class Homepage extends AppCompatActivity {
         });
 
         //LDR
-        ldrBtn.setOnClickListener(v -> {
-            Intent ldrIntent = new Intent(Homepage.this, Homepage.class);
-            startActivity(ldrIntent);
+        wifiBtn.setOnClickListener(v -> {
+            Intent wifiIntent = new Intent(Homepage.this, WifiManager.class);
+            startActivity(wifiIntent);
         });
 
         func1.setOnClickListener(v -> {
-            Intent func1Intent = new Intent(Homepage.this, WifiManager.class);
+            Intent func1Intent = new Intent(Homepage.this, ThresholdAlert.class);
             startActivity(func1Intent);
         });
 
@@ -91,11 +119,5 @@ public class Homepage extends AppCompatActivity {
             Intent func2Intent = new Intent(Homepage.this, ArduinoInterval.class);
             startActivity(func2Intent);
         });
-
-        ldrBtn.setOnClickListener(v -> {
-            Intent ldrIntent = new Intent(Homepage.this, Homepage.class);
-            startActivity(ldrIntent);
-        });
-
     }
 }

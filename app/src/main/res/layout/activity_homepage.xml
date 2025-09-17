@@ -227,7 +227,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/ldrBtn"
+        android:id="@+id/wifiBtn"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="20dp"
@@ -242,18 +242,18 @@
         android:foreground="?attr/selectableItemBackground">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="45dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/ldricon">
+            android:layout_width="85dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="42dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/wifi">
         </ImageView>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="95dp"
-            android:text="LDR"
+            android:text="WIFI MANAGER"
             android:fontFamily="sans-serif-black"
             android:textSize="19dp"
             android:gravity="center"
@@ -290,9 +290,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="70sp"
-            android:layout_height="60sp"
-            android:background="@drawable/wifi"
+            android:layout_width="73sp"
+            android:layout_height="68sp"
+            android:background="@drawable/alert"
             android:layout_gravity="center"/>
 
     </androidx.cardview.widget.CardView>
@@ -337,6 +337,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/func3Icon"
             android:layout_width="65sp"
             android:layout_height="65sp"
             android:background="@drawable/refresh"

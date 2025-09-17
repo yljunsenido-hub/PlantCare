@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_vertical">
+
+    <EditText
+        android:id="@+id/inputMoisture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Soil Moisture Threshold (%)"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/inputTemp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Temperature Threshold (°C)"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btnApply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Thresholds" />
+
+</LinearLayout>

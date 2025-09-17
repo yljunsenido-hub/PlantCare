@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +25,9 @@ import org.json.JSONObject;
 public class WifiManager extends AppCompatActivity {
 
     Button resetBtn;
-    TextView wifiInfoText;
+    TextView wifiInfoText, statusText;
     ImageButton btnBack;
+    ImageView imageView;
     private static final String ESP_IP_ADDRESS = "esp8266.local";
 
     @Override
@@ -42,11 +44,15 @@ public class WifiManager extends AppCompatActivity {
 
         resetBtn = findViewById(R.id.resetBtn);
         wifiInfoText = findViewById(R.id.wifiInfoText);
+        statusText = findViewById(R.id.statusText);
         btnBack = findViewById(R.id.btnBack);
+        imageView = findViewById(R.id.imageView);
 
-        if (wifiInfoText == null) {
-            Toast.makeText(this, "wifiInfoText not found in layout!", Toast.LENGTH_LONG).show();
-        }
+        // 🔹 Set default UI
+        wifiInfoText.setText("Loading WiFi info...");
+        statusText.setText("Not Connected");
+        statusText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+        imageView.setBackgroundResource(R.drawable.wifioff);
 
         if (resetBtn != null) {
             resetBtn.setOnClickListener(v -> sendWifiResetRequest());
@@ -80,14 +86,15 @@ public class WifiManager extends AppCompatActivity {
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
-                        String ssid = jsonObject.optString("ssid", "N/A");
-                        String bssid = jsonObject.optString("bssid", "N/A");
-                        String local_ip = jsonObject.optString("local_ip", "N/A");
-                        String gateway = jsonObject.optString("gateway", "N/A");
-                        String subnet = jsonObject.optString("subnet", "N/A");
-                        String mac = jsonObject.optString("mac", "N/A");
+                        String ssid = jsonObject.optString("ssid", "");
+                        String bssid = jsonObject.optString("bssid", "");
+                        String local_ip = jsonObject.optString("local_ip", "");
+                        String gateway = jsonObject.optString("gateway", "");
+                        String subnet = jsonObject.optString("subnet", "");
+                        String mac = jsonObject.optString("mac", "");
 
-                        if (wifiInfoText != null) {
+                        if (!ssid.isEmpty() && !local_ip.isEmpty()) {
+                            // ✅ Connected state
                             wifiInfoText.setText(
                                     "SSID: " + ssid +
                                             "\nBSSID: " + bssid +
@@ -96,19 +103,31 @@ public class WifiManager extends AppCompatActivity {
                                             "\nSubnet: " + subnet +
                                             "\nMAC: " + mac
                             );
+
+                            statusText.setText("Connected");
+                            statusText.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                            imageView.setBackgroundResource(R.drawable.wifi);
+
                         } else {
-                            Toast.makeText(this, "wifiInfoText is NULL!", Toast.LENGTH_LONG).show();
+                            wifiInfoText.setText("No WiFi info available");
+                            statusText.setText("Not Connected");
+                            statusText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                            imageView.setBackgroundResource(R.drawable.wifioff);
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        if (wifiInfoText != null) wifiInfoText.setText("Parse error");
+                        wifiInfoText.setText("Parse error");
+                        statusText.setText("Not Connected");
+                        statusText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                        imageView.setBackgroundResource(R.drawable.wifioff);
                     }
                 },
                 error -> {
-                    if (wifiInfoText != null) {
-                        wifiInfoText.setText("Failed: " + error.toString());
-                    }
+                    wifiInfoText.setText("Failed: " + error.toString());
+                    statusText.setText("Not Connected");
+                    statusText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                    imageView.setBackgroundResource(R.drawable.wifioff);
                 });
 
         queue.add(stringRequest);
