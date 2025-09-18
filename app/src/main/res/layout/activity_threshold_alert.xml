@@ -8,10 +8,6 @@
     android:layout_height="match_parent"
     android:padding="20dp">
 
-    <!-- Title -->
-
-    <!-- Back Button -->
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="300dp"
@@ -96,7 +92,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/bigText1"
+                        android:id="@+id/moisture"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
@@ -131,7 +127,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/bigText2"
+                        android:id="@+id/temperature"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
@@ -166,7 +162,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/bigText3"
+                        android:id="@+id/humidity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"

@@ -1,23 +1,27 @@
 package com.example.plantcare;
 
-import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,11 +29,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class ThresholdAlert extends AppCompatActivity {
-
-    private static final String CHANNEL_ID = "PlantAlerts";
     private EditText inputMoisture, inputTemp, inputHumid;
     private Button btnApply;
-    private DatabaseReference alertsRef;
+    private DatabaseReference thresholdsRef, alertsRef;
+    private TextView moistureText, tempText, humidText;
+
+    private String uid;
+    private String espUrl = "http://esp8266.local"; // ESP endpoint
+    private static final String CHANNEL_ID = "threshold_channel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,101 +49,147 @@ public class ThresholdAlert extends AppCompatActivity {
         inputHumid = findViewById(R.id.inputHumid);
         btnApply = findViewById(R.id.btnApply);
 
-        createNotificationChannel();
-        requestNotifPermission();
+        moistureText = findViewById(R.id.moisture);
+        tempText = findViewById(R.id.temperature);
+        humidText = findViewById(R.id.humidity);
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        thresholdsRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(uid)
+                .child("thresholds");
         alertsRef = FirebaseDatabase.getInstance().getReference("Users")
                 .child(uid)
                 .child("alerts");
 
-        // 🔹 Listen for soil + temp changes
-        alertsRef.addValueEventListener(new ValueEventListener() {
+        createNotificationChannel();
+
+        btnApply.setOnClickListener(v -> saveThresholds());
+
+        // Load current thresholds on page open
+        loadThresholds();
+
+        // Start listening for alerts pushed by Arduino
+        listenForAlerts();
+    }
+
+    private void saveThresholds() {
+        String mStr = inputMoisture.getText().toString().trim();
+        String tStr = inputTemp.getText().toString().trim();
+        String hStr = inputHumid.getText().toString().trim();
+
+        if (TextUtils.isEmpty(mStr) || TextUtils.isEmpty(tStr) || TextUtils.isEmpty(hStr)) {
+            showNotification("Threshold Error", "Please fill all fields before applying.");
+            return;
+        }
+
+        int moisture = Integer.parseInt(mStr);
+        int temp = Integer.parseInt(tStr);
+        int humid = Integer.parseInt(hStr);
+
+        // 1. Save to Firebase
+        thresholdsRef.child("moisture").setValue(moisture);
+        thresholdsRef.child("temp").setValue(temp);
+        thresholdsRef.child("humid").setValue(humid);
+
+        // 2. Send to ESP8266
+        String url = espUrl + "/setThreshold?uid=" + uid
+                + "&moisture=" + mStr
+                + "&temp=" + tStr
+                + "&humid=" + hStr;
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    // Update UI
+                    moistureText.setText(mStr);
+                    tempText.setText(tStr);
+                    humidText.setText(hStr);
+
+                    // Clear edit texts
+                    inputMoisture.setText("");
+                    inputTemp.setText("");
+                    inputHumid.setText("");
+                },
+                error -> showNotification("ESP Error", "Failed to send to ESP: " + error.getMessage()));
+        queue.add(request);
+    }
+
+    private void loadThresholds() {
+        thresholdsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    if (snapshot.hasChild("soil")) {
-                        String soilMsg = snapshot.child("soil").getValue(String.class);
-                        showNotification("Soil Alert", soilMsg);
-                    }
-                    if (snapshot.hasChild("temp")) {
-                        String tempMsg = snapshot.child("temp").getValue(String.class);
-                        showNotification("Temperature Alert", tempMsg);
-                    }
-                    if (snapshot.hasChild("humid")) {
-                        String humidMsg = snapshot.child("humid").getValue(String.class);
-                        showNotification("Humidity Alert", humidMsg);
-                    }
+                    String moisture = String.valueOf(snapshot.child("moisture").getValue());
+                    String temp = String.valueOf(snapshot.child("temp").getValue());
+                    String humid = String.valueOf(snapshot.child("humid").getValue());
+
+                    if (!moisture.equals("null")) moistureText.setText(moisture);
+                    if (!temp.equals("null")) tempText.setText(temp);
+                    if (!humid.equals("null")) humidText.setText(humid);
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
-        });
-
-        // 🔹 Send thresholds to ESP8266
-        btnApply.setOnClickListener(v -> {
-            String mStr = inputMoisture.getText().toString().trim();
-            String tStr = inputTemp.getText().toString().trim();
-            String hStr = inputHumid.getText().toString().trim();
-
-            if (mStr.isEmpty() || tStr.isEmpty() || hStr.isEmpty()) {
-                Toast.makeText(this, "Enter thresholds", Toast.LENGTH_SHORT).show();
-                return;
+            public void onCancelled(@NonNull DatabaseError error) {
+                showNotification("Load Error", "Failed to load thresholds");
             }
+        });
+    }
 
-            int moisture = Integer.parseInt(mStr);
-            int temp = Integer.parseInt(tStr);
-            int humid = Integer.parseInt(hStr);
-
-            new Thread(() -> {
-                try {
-                    String url = "http://esp8266.local/setThreshold?moisture=" + moisture + "&temp=" + temp + "&humid=" + humid;
-                    java.net.URL u = new java.net.URL(url);
-                    java.net.HttpURLConnection conn = (java.net.HttpURLConnection) u.openConnection();
-                    conn.setRequestMethod("GET");
-                    conn.getInputStream();
-                    runOnUiThread(() -> Toast.makeText(this, "Thresholds sent to ESP", Toast.LENGTH_SHORT).show());
-                } catch (Exception e) {
-                    runOnUiThread(() -> Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+    private void listenForAlerts() {
+        alertsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String prevChildKey) {
+                String message = snapshot.getValue(String.class);
+                if (message != null) {
+                    showNotification("Alert", message);
                 }
-            }).start();
-
-        });
-    }
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Plant Alerts";
-            String description = "Threshold notifications";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManager nm = getSystemService(NotificationManager.class);
-            if (nm != null) nm.createNotificationChannel(channel);
-        }
-    }
-
-    private void requestNotifPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
             }
-        }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String prevChildKey) {
+                String message = snapshot.getValue(String.class);
+                if (message != null) {
+                    showNotification("Alert Update", message);
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                String key = snapshot.getKey();
+                showNotification("Alert Cleared", key + " alert cleared");
+            }
+
+            @Override public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String prevChildKey) {}
+            @Override public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
     private void showNotification(String title, String message) {
-        if (message == null) return;
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.plantcarelogo) // your app logo from res/drawable
+                .setSmallIcon(R.drawable.plantcarelogo) // make sure this exists in res/drawable
                 .setContentTitle(title)
                 .setContentText(message)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message)) // long text support
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
-        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (nm != null) nm.notify((int) System.currentTimeMillis(), builder.build());
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        int notificationId = (int) System.currentTimeMillis();
+        notificationManager.notify(notificationId, builder.build());
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Threshold Channel";
+            String description = "Channel for threshold alerts";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
 }
