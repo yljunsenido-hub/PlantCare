@@ -43,49 +43,52 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="287dp"
-        android:layout_height="350dp"
+        android:layout_height="300dp"
         app:cardCornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/wifiInfoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:fontFamily="sans-serif-medium"
                 android:text="Loading WiFi info..."
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="22sp"
+                android:layout_weight="1"
+                android:layout_marginBottom="20dp"/>
 
             <Button
                 android:id="@+id/resetBtn"
                 android:layout_width="200dp"
                 android:layout_height="45dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="20dp"
                 android:background="@drawable/custom"
+                android:fontFamily="sans-serif-black"
                 android:text="Reset Wifi"
                 android:textColor="@color/white"
-                android:fontFamily="sans-serif-black"
-                android:textSize="17dp"/>
+                android:textSize="17sp"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
 
 
     <androidx.cardview.widget.CardView
         android:layout_width="140dp"
         android:layout_height="120dp"
         app:cardCornerRadius="30dp"
+        android:layout_marginTop="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
