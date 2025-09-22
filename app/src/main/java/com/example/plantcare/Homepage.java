@@ -119,5 +119,8 @@ public class Homepage extends AppCompatActivity {
             Intent func2Intent = new Intent(Homepage.this, ArduinoInterval.class);
             startActivity(func2Intent);
         });
+
+        Intent serviceIntent = new Intent(this, ThresholdAlertService.class);
+        startService(serviceIntent);
     }
 }

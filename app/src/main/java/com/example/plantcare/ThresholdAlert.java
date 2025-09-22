@@ -2,11 +2,13 @@ package com.example.plantcare;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -35,6 +37,7 @@ public class ThresholdAlert extends AppCompatActivity {
     private TextView moistureText, tempText, humidText;
 
     private String uid;
+    private ImageButton btnBack;
     private String espUrl = "http://esp8266.local"; // ESP endpoint
     private static final String CHANNEL_ID = "threshold_channel";
 
@@ -48,10 +51,17 @@ public class ThresholdAlert extends AppCompatActivity {
         inputTemp = findViewById(R.id.inputTemp);
         inputHumid = findViewById(R.id.inputHumid);
         btnApply = findViewById(R.id.btnApply);
+        btnBack = findViewById(R.id.btnBack);
 
         moistureText = findViewById(R.id.moisture);
         tempText = findViewById(R.id.temperature);
         humidText = findViewById(R.id.humidity);
+
+        btnBack.setOnClickListener(v -> {
+            Intent intent = new Intent(ThresholdAlert.this, Homepage.class);
+            startActivity(intent);
+            finish();
+        });
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         thresholdsRef = FirebaseDatabase.getInstance().getReference("Users")
