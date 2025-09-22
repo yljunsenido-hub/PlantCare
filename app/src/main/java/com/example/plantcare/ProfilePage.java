@@ -22,8 +22,8 @@ public class ProfilePage extends AppCompatActivity {
     TextView usernametxt, lastnametxt, firstnametxt, contacttxt, emailtxt;
     private FirebaseAuth mAuth;
     private DatabaseReference userRef;
-
     ImageButton btnBack;
+    Button logoutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class ProfilePage extends AppCompatActivity {
         contacttxt = findViewById(R.id.contacttxt);
         emailtxt = findViewById(R.id.emailtxt);
         btnBack = findViewById(R.id.btnBack);
+        logoutBtn = findViewById(R.id.logoutBtn);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -89,6 +90,14 @@ public class ProfilePage extends AppCompatActivity {
         btnBack.setOnClickListener(View -> {
             Intent intent = new Intent(ProfilePage.this, Homepage.class);
             startActivity(intent);
+        });
+
+        logoutBtn.setOnClickListener(v -> {
+            mAuth.signOut();
+            Intent intent = new Intent(ProfilePage.this, Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear backstack
+            startActivity(intent);
+            finish();
         });
     }
 }
